@@ -34,15 +34,16 @@ app.post('/teas', async(req, res) => {
     .then(teas => res.send(teas));
 });
 
-app.put('/teas', (req, res) => {
+app.put('/teas/:id', (req, res) => {
   Tea
     .update(req.params.id, req.body)
     .then(teas => res.send(teas));
 });
 
-app.delete('/teas', (req, res) => {
+app.delete('/teas/:id', (req, res) => {
   Tea
-    .delete(req.params.id);
+    .delete(req.params.id)
+    .then(teas => res.send(teas));
 });
 
 module.exports = app;
