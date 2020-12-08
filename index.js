@@ -10,11 +10,10 @@ app.listen('3000', () => {
   console.log('listening on port 3000');
 });
 
-app.get('/teas', (req, res) => {
-  Tea
-    .findById(2)
-    .then(teas => res.send(teas));
+app.get('/', (req, res) => {
+  res.send('Hello');
 });
+
 
 app.get('/teas', (req, res) => {
   Tea
@@ -22,22 +21,28 @@ app.get('/teas', (req, res) => {
     .then(teas => res.send(teas));
 });
 
+app.get('/teas/:id', (req, res) => {
+  Tea
+    .findById(req.params.id)
+    .then(teas => res.send(teas));
+});
+
+
 app.post('/teas', async(req, res) => {
   Tea
     .insert(req.body)
-    .then(console.log);
+    .then(teas => res.send(teas));
 });
 
 app.put('/teas', (req, res) => {
   Tea
-    .update(1, { title: 'actual tea', description: 'really cool real live tea', url: 'www.thisistea.com' })
-    .then(console.log);
+    .update(req.params.id, req.body)
+    .then(teas => res.send(teas));
 });
 
 app.delete('/teas', (req, res) => {
   Tea
-    .delete(1)
-    .then(console.log);
+    .delete(req.params.id);
 });
 
 module.exports = app;
