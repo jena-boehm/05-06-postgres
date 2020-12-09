@@ -25,7 +25,7 @@ describe('test routes', () => {
     return pool.end();
   });
 
-  test('should return all teas', async() => {
+  it('should return all teas', async() => {
 
     const data = await request(app)
       .get('/teas')
@@ -35,7 +35,7 @@ describe('test routes', () => {
     expect(data.body).toEqual([tea]);
   });
 
-  test('should return one tea by id', async() => {
+  it('should return one tea by id', async() => {
 
 
     const data = await request(app)
@@ -45,4 +45,37 @@ describe('test routes', () => {
 
     expect(data.body).toEqual(tea);
   });
+
+  // it('should create a tea', async() => {
+
+  //   const newTea = { 
+  //     title: 'Pu-erh', 
+  //     description: 'A variety of fermented tea traditionally produced in Yunnan Province, China.', 
+  //     url: 'https://en.wikipedia.org/wiki/Pu%27er_tea'
+  //   };
+
+  //   const data = await request(app)
+  //     .post('/teas')
+  //     .send(newTea)
+  //     .expect('Content-Type', /json/)
+  //     .expect(200);
+
+  //   expect(data.body).toEqual(newTea);
+  // });
+
+  // it('should update a tea by id', async() => {
+  //   const updatedTea = { 
+  //     title: 'Pu-erh', 
+  //     description: 'A variety of fermented tea traditionally produced in Yunnan Province, China.', 
+  //     url: 'https://en.wikipedia.org/wiki/Pu%27er_tea'
+  //   };
+
+  //   const data = await request(app)
+  //     .put(`/teas/${tea.id}`)
+  //     .send(updatedTea)
+  //     .expect('Content-Type', /json/)
+  //     .expect(200);
+
+  //   expect(data.body).toEqual(updatedTea);
+  // });
 });
