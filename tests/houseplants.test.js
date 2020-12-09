@@ -11,7 +11,7 @@ describe('test routes', () => {
   let houseplant;
 
   beforeEach(async() => {
-    pool.query(fs.readFileSync('./SQL/setup.sql', 'utf-8'));
+    await pool.query(fs.readFileSync('./SQL/setup.sql', 'utf-8'));
 
     houseplant = await Houseplant
       .insert({ 
@@ -25,28 +25,63 @@ describe('test routes', () => {
   });
 
   it('should return all houseplants', async() => {
-    const expectation = { 
-      name: 'Calathea', 
-      type: 'Tropical'
-    };
 
     const data = await request(app)
       .get('/houseplants')
       .expect('Content-Type', /json/)
       .expect(200);
 
-      console.log(data.body);
-
-    expect(data.body).toEqual(expectation);
+    expect(data.body).toEqual([houseplant]);
   });
 
-  //   it('should return one houseplant by id', async() => {
+  it('should return one houseplant by id', async() => {
 
-  //     const data = await request(app)
-  //       .get(`/houseplants/${houseplant.id}`)
-  //       .expect('Content-Type', /json/)
-  //       .expect(200);
+    const data = await request(app)
+      .get(`/houseplants/${houseplant.id}`)
+      .expect('Content-Type', /json/)
+      .expect(200);
 
-//     expect(data.body).toEqual(houseplant);
-//   });
+    expect(data.body).toEqual(houseplant);
+  });
+
+  it('should create a houseplant', async() => {
+
+    const newHouseplant = { 
+      name: 'Bear Paw', 
+      type: 'Succulent'
+    };
+
+    const data = await request(app)
+      .post('/houseplants')
+      .send(newHouseplant)
+      .expect('Content-Type', /json/)
+      .expect(200);
+
+    expect(data.body).toEqual({ ...newHouseplant, id: '2' });
+  });
+
+  it('should update a houseplant by id', async() => {
+    const updatedHouseplant = { 
+      name: 'Snake Plant', 
+      type: 'Succulent'
+    };
+
+    const data = await request(app)
+      .put(`/houseplants/${houseplant.id}`)
+      .send(updatedHouseplant)
+      .expect('Content-Type', /json/)
+      .expect(200);
+
+    expect(data.body).toEqual({ ...updatedHouseplant, id: '1' });
+  });
+
+  it('should delete a houseplant by id', async() => {
+
+    const data = await request(app)
+      .delete(`/houseplants/${houseplant.id}`)
+      .expect('Content-Type', /json/)
+      .expect(200);
+
+    expect(data.body).toEqual(houseplant);
+  });
 });
