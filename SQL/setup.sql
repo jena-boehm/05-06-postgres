@@ -35,4 +35,3 @@ CREATE TABLE restaurants (
     city TEXT NOT NULL,
     cuisine TEXT NOT NULL
 );
-
